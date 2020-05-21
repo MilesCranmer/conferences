@@ -12,7 +12,7 @@ top_conferences = pd.read_csv('top_conferences.csv')
 
 cal_file = open('calendar.csv', 'w')
 
-print('Subject,Start date,Start time', file=cal_file)
+print('Subject,Start Date,All Day Event,Description,', file=cal_file)
 
 for _, row in data.iterrows():
     if not (row['title'] in list(top_conferences['title'])):
@@ -22,11 +22,27 @@ for _, row in data.iterrows():
 
     other_data = top_conferences.loc[index].iloc[0]
 
-    print('HELLO')
-    print(row['deadline'])
-    print(other_data['title'])
-    print(','.join(
-        [other_data['title'] + ' submission deadline'] +
-        str(row['deadline']).split(' ')),
-        file=cal_file)
+    modifier = ''
+    for year_update in range(3):
+        date = row['deadline'].split(' ')[0]
+        if year_update > 0:
+            modifier = ' [expected]'
+            tmp = date.split('-')
+            date = '-'.join([
+                str(int(tmp[0]) + year_update),
+                tmp[1],
+                tmp[2]])
+
+        print(','.join(
+            [other_data['title'] + modifier + ' submission deadline'] +
+            [
+                date,
+                'True',
+                (other_data['description'] +
+                    ' - h-index=' +
+                    str(other_data['h-index']) +
+                    ' ' +
+                    row['link'])
+            ]),
+            file=cal_file)
 
