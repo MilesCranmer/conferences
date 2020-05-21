@@ -1,7 +1,7 @@
 # Generate a Google calendar of top AI/ML conferences
 
 
-To use: edit the selection in `top_conferences.csv`, change the line
+To use: edit the selection in `top_conferences.csv`, and change the line in `update_cal.sh`:
 ```
 source activate main2
 ```
